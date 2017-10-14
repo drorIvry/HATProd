@@ -43,8 +43,8 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 // Routes
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+app.get('/ui/*', (req, res) => {
+  res.sendFile(path.resolve(__dirname,'..','build','index.html'));
 });
 app.use('/users',users);
 app.use('/pledge',pledge);
