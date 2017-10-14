@@ -2,13 +2,6 @@ import express from 'express';
 import path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import users from './routes/users';
-import routes from './routes';
-import mongoose from 'mongoose';
-import pledge from './routes/pledge';
-import getUsers from './routes/getUsers';
-import {addToBucket, pourBucket, filterBucket} from './routes/bucketActions';
-import {addMotionToVote, getMotions, voteForMotion} from './routes/motions';
 
 const app = express();
 app.disable('x-powered-by');
@@ -37,25 +30,11 @@ app.options("/*", function(req, res, next){
   res.send(200);
 });
 
-//Mongo
-mongoose.connect('mongodb://localhost:27017/hat');
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
 
 // Routes
-app.get('/ui/*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname,'..','build','index.html'));
 });
-app.use('/users',users);
-app.use('/pledge',pledge);
-app.use('/getusers',getUsers);
-app.get('/bucket', pourBucket);
-app.post('/bucket', addToBucket);
-app.post('/filterBucket',filterBucket);
-app.get('/motions', getMotions);
-app.post('/motions',addMotionToVote);
-app.post('/vote',voteForMotion);
-
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
